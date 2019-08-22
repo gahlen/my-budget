@@ -1,0 +1,10 @@
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    background-color: gray;
+    height: 12%;
+}
+
+.navbar * {
+    margin: 1vh 1vw;
+}

@@ -1,0 +1,20 @@
+columns = {[
+    {Header: "Post Date",
+     accessor: effectiveDate},
+    {Header: "Type",
+     accessor: type},
+    {Header: "Amount",
+     accessor: amount},
+    {Header: "Reference Id",
+     accessor: entryData.refNumber},
+    {Header: "Description",
+     accessor: entryData.description},
+    {Header: "Balance",
+     accessor: entryData.balance}
+  ]}
+
+
+  {/* <div id="homePage">
+      Select Login to start
+      {entryData}
+    </div> */}
