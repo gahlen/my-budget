@@ -11,8 +11,9 @@ button {
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
-  margin: 8px 0;
+  margin: 8px 20px;
   border-radius: 12px;
+
   cursor: pointer;
 
 }
@@ -50,9 +51,9 @@ button:hover {
 
   /* Full-width input fields */
 input[type=text], input[type=password], input[type=email]{
-  width: 100%;
+  width: 50%;
   padding: 12px 20px;
-  margin: 8px 0;
+  margin: 7px ; 
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;

@@ -4,19 +4,13 @@ import cellEditFactory from "react-bootstrap-table2-editor";
 
 const columns = [
   { text: "Post Date", dataField: "effectiveDate" },
-  { text: "Type", dataField: "type" },
   { text: "Reference Id", dataField: "refNumber" },
+  { text: "Type", dataField: "type" },
   { text: "Description", dataField: "description" },
   { text: "Category", dataField: "category" },
   { text: "Amount", dataField: "amount" },
   { text: "Balance", dataField: "balance" }
 ];
-// const selectRow = {
-//   mode: "checkbox",
-//   clickToSelect: true,
-//   clickToEdit: true // Click to edit cell also
-// };
-
 
 class Ledger extends Component {
   constructor(props) {
@@ -29,7 +23,10 @@ class Ledger extends Component {
 
   handleBtnClick = (e) => {
     e.preventDefault()
-    console.log("state data",this.state.entryData)
+    console.log("state data",this.state.selected)
+
+
+
   };
 
   handleOnSelect = (row, isSelect) => {

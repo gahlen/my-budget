@@ -1,0 +1,75 @@
+
+th {
+  text-align: left;
+}
+
+form {
+  display: flex;
+  background-color: #fcf2dc;
+}
+.display-block {
+    display: block;
+  }
+  
+  .display-none {
+    display: none;
+  }
+  
+  button {
+    background-color: #f2cd75;
+    color: rgb(73, 52, 52);
+    padding: 14px 20px;
+    margin: 9px 4px;
+    border-radius: 12px;
+  
+    cursor: pointer;
+  
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .container {
+    padding: 25px;
+  }
+  
+      /* Add Zoom Animation */
+      .animate {
+        -webkit-animation: animatezoom 0.6s;
+        animation: animatezoom 0.6s
+      }
+  
+      @-webkit-keyframes animatezoom {
+        from {-webkit-transform: scale(0)}
+        to {-webkit-transform: scale(1)}
+      }
+  
+      @keyframes animatezoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+      }
+  
+    /* Full-width input fields
+  input[type=text], input[type=password], input[type=email]{
+    width: 60%;
+    padding: 12px 25px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 5px solid #ccc;
+    box-sizing: border-box;
+  } */
+
+  .budget {
+    display:inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align:right;
+  }
+
+  .flexButton {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+  }
+  

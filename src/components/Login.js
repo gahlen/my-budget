@@ -33,9 +33,11 @@ class Login extends React.Component {
           {ifRedirect ? <Redirect to='/'/> :
         <>
         <form className="container animate" onSubmit={this.handleSubmit} >
+        <br/>
           <label htmlFor="username">
             <b>Username</b>
           </label>
+          <br/>
           <input
             type="text"
             placeholder="Enter Username"
@@ -44,10 +46,11 @@ class Login extends React.Component {
             onChange={this.handleChange}
             required
           />
-
+          <br/>
           <label htmlFor="password">
             <b>Password</b>
           </label>
+          <br/>
           <input
             type="password"
             placeholder="Enter Password"
@@ -56,6 +59,7 @@ class Login extends React.Component {
             onChange={this.handleChange}
             required
           />
+          <br/>
           <button type="submit">Login</button>
         </form>
         <div>
