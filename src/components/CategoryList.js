@@ -6,7 +6,7 @@ const columns = [
   { text: "Budgeted Amount", dataField: "budgetAmount" }
 ];
 
-class BudgetList extends Component {
+class CategoryList extends Component {
 
   render() {
 
@@ -21,4 +21,4 @@ class BudgetList extends Component {
     );
   }
 }
-export default BudgetList
+export default CategoryList

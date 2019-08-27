@@ -1,32 +1,31 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory from "react-bootstrap-table2-editor";
-
-const columns = [
-  { text: "Post Date", dataField: "effectiveDate" },
-  { text: "Reference Id", dataField: "refNumber" },
-  { text: "Type", dataField: "type" },
-  { text: "Description", dataField: "description" },
-  { text: "Category", dataField: "category" },
-  { text: "Amount", dataField: "amount" },
-  { text: "Balance", dataField: "balance" }
-];
+import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 
 class Ledger extends Component {
   constructor(props) {
     super(props);
-    this.state = { selected: [],
-                   entryData: [],
-                   selectData: [] };
+    this.state = {
+      selected: [],
+      entryData: [],
+      selectData: [],
+      categoryData: []
+    };
   }
-  
 
-  handleBtnClick = (e) => {
-    e.preventDefault()
-    console.log("state data",this.state.selected)
-
-
-
+  handleBtnClick = e => {
+    e.preventDefault();
+    let reference = this.state.selected;
+    let putData = this.state.entryData.filter(data =>
+      reference.includes(data.refNumber)
+    );
+    fetch("http://localhost:4000/ledger/", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(putData)
+    })
+      .then(res => res.json())
+      .then(console.log);
   };
 
   handleOnSelect = (row, isSelect) => {
@@ -54,7 +53,20 @@ class Ledger extends Component {
     }
   };
 
-  componentDidMount() {
+  getCategories = () => {
+    fetch("http://localhost:4000/category", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(entries => {
+        this.setState(() => ({
+          categoryData: entries
+        }));
+      })
+      .catch(err => console.log("error", err));
+  };
+
+  getBankData = () => {
     fetch("http://localhost:4000/", {
       method: "GET"
     })
@@ -65,6 +77,11 @@ class Ledger extends Component {
         }));
       })
       .catch(err => console.log("error", err));
+  };
+
+  componentDidMount() {
+    this.getBankData();
+    this.getCategories();
   }
 
   render() {
@@ -76,14 +93,35 @@ class Ledger extends Component {
       selected: this.state.selected,
       onSelect: this.handleOnSelect,
       onSelectAll: this.handleOnSelectAll,
-      bgColor: '#def3ff'
-
+      bgColor: "#def3ff"
     };
 
-    const cellEdit = cellEditFactory({ 
-      mode: 'click', 
-      blurToSave: true, 
-     })
+    const columns = [
+      { text: "Post Date", dataField: "effectiveDate" },
+      { text: "Reference Id", dataField: "refNumber" },
+      { text: "Type", dataField: "type" },
+      { text: "Description", dataField: "description" },
+      {
+        text: "Category",
+        dataField: "category",
+        editor: {
+          type: Type.SELECT,
+          getOptions: (setOptions, { row, column }) => {
+            return this.state.categoryData.map(category => ({
+              value: category.category,
+              label: category.category
+            }));
+          }
+        }
+      },
+      { text: "Amount", dataField: "amount" },
+      { text: "Balance", dataField: "balance" }
+    ];
+
+    const cellEdit = cellEditFactory({
+      mode: "click",
+      blurToSave: true
+    });
 
     return (
       <div>
@@ -95,11 +133,11 @@ class Ledger extends Component {
           keyField="refNumber"
           data={this.state.entryData}
           columns={columns}
+          cellEdit={cellEdit}
           selectRow={selectRow}
-          cellEdit={ cellEdit }
         />
       </div>
     );
   }
 }
-export default Ledger
+export default Ledger;

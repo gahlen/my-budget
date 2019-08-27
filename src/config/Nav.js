@@ -10,7 +10,7 @@ const Nav = ({ login }) => {
       <Link to = "/">Register</Link>
       {/* <Link to="/auth">Register</Link> */}
       <Link to = "/report">Reports</Link>
-      <Link to = "/budget">Budget</Link>
+      <Link to = "/category">Category Management</Link>
       <Link to = "/import">Import</Link>
     </nav>
   );
