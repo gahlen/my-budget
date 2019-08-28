@@ -1,0 +1,71 @@
+
+th {
+  text-align: left;
+}
+
+form {
+  display: flex;
+  background-color: #fcf2dc;
+}
+  
+  button {
+    background-color: #f2cd75;
+    color: rgb(73, 52, 52);
+    padding: 14px 20px;
+    margin: 9px 4px;
+    border-radius: 12px;
+  
+    cursor: pointer;
+  
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  .container {
+    padding: 25px;
+  }
+  
+      /* Add Zoom Animation */
+      .animate {
+        -webkit-animation: animatezoom 0.6s;
+        animation: animatezoom 0.6s
+      }
+  
+      @-webkit-keyframes animatezoom {
+        from {-webkit-transform: scale(0)}
+        to {-webkit-transform: scale(1)}
+      }
+  
+      @keyframes animatezoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+      }
+  
+  .budget {
+    display:inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align:right;
+  }
+
+  .flexButton {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+  }
+  #btotal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  border: 3px solid #73AD21;
+}
+
+.budgetText {
+  color: #3949ab;
+  text-align: center;
+}
+  
+  

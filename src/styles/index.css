@@ -1,27 +1,4 @@
 
-.display-block {
-  display: block;
-}
-
-.display-none {
-  display: none;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 20px;
-  border-radius: 12px;
-
-  cursor: pointer;
-
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;

@@ -60,7 +60,14 @@ class Ledger extends Component {
       .then(res => res.json())
       .then(entries => {
         this.setState(() => ({
-          categoryData: entries
+          categoryData: entries.sort((a,b) => {
+            if (a.category < b.category) {
+              return -1
+            }
+            if (a.category > b.category) {
+              return 1
+            }           
+          })
         }));
       })
       .catch(err => console.log("error", err));

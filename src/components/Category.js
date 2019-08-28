@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import CategoryList from "./CategoryList";
-import "../styles/Budget.css";
+import "../styles/Category.css";
 
 class Category extends Component {
   constructor(props) {
     super(props);
-    this.state = { category: "", budgetAmount: "", entryData: [] };
+    this.state = {
+      category: "",
+      budgetAmount: "",
+      entryData: [],
+      budgetTotal: 0
+    };
   }
 
   getData = () => {
@@ -15,8 +20,23 @@ class Category extends Component {
       .then(res => res.json())
       .then(entries => {
         this.setState(() => ({
-          entryData: entries
+          entryData: entries.sort((a,b) => {
+            if (a.category < b.category) {
+              return -1
+            }
+            if (a.category > b.category) {
+              return 1
+            }           
+          })
         }));
+      })
+      .then(() => {
+        this.state.entryData.forEach(element => {
+          this.setState({
+            budgetTotal:
+              this.state.budgetTotal + parseFloat(element.budgetAmount)
+          });
+        });
       })
       .catch(err => console.log("error", err));
   };
@@ -41,7 +61,7 @@ class Category extends Component {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
           })
-            .then(() => this.setState({ category: "", budgetAmount: "" }))
+            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
             .then(() => {
               this.getData();
             });
@@ -49,13 +69,14 @@ class Category extends Component {
         case "u":
           await fetch(
             `http://localhost:4000/category/${this.state.category}/${
-              this.state.budgetAmount}`,
+              this.state.budgetAmount
+            }`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" }
             }
           )
-            .then(() => this.setState({ category: "", budgetAmount: "" }))
+            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
             .then(() => {
               this.getData();
             });
@@ -65,7 +86,7 @@ class Category extends Component {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
           })
-            .then(() => this.setState({ category: "", budgetAmount: "" }))
+            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
             .then(() => {
               this.getData();
             });
@@ -102,7 +123,6 @@ class Category extends Component {
               name="budgetAmount"
               value={this.state.budgetAmount}
               onChange={this.handleChange}
-              required
             />
             <div>
               <button id="a" onClick={this.handleSubmit} type="submit">
@@ -118,6 +138,7 @@ class Category extends Component {
           </div>
           <div className="budget">
             <CategoryList entryData={this.state.entryData} />
+            <h3>Budget Total: {this.state.budgetTotal} </h3>
           </div>
         </form>
       </>

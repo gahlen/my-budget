@@ -5,6 +5,8 @@ import Auth from "../pages/Auth";
 import Login from "../components/Login";
 import Category from "../components/Category";
 import CategoryList from "../components/CategoryList"
+import Budget from "../components/Budget"
+
 import ResetPassword from "../components/ResetPassword";
 
 const Routes = ({ addContact, login }) => {
@@ -23,6 +25,8 @@ const Routes = ({ addContact, login }) => {
       <Route path="/forgot" component={ResetPassword} />     
       <Route path="/category" component={Category} />
       <Route path="/categorylist" component={CategoryList} />
+      <Route path="/budget" component={Budget} />
+
 
 
 
