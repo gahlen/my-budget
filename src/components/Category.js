@@ -28,14 +28,15 @@ class Category extends Component {
               return 1
             }           
           })
-        }));
+        }))
       })
       .then(() => {
         this.state.entryData.forEach(element => {
           this.setState({
             budgetTotal:
               this.state.budgetTotal + parseFloat(element.budgetAmount)
-          });
+          },              console.log("total budget",this.state.budgetTotal, parseFloat(element.budgetAmount))
+          );
         });
       })
       .catch(err => console.log("error", err));

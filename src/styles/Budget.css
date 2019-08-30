@@ -1,6 +1,68 @@
-Container {
-    display: flex;
-    /* background-color: #fcf2dc; */
-    background-color: red;
-    flex-direction: row;
-  }
+.column {
+  background-color: #3949ab;
+  float: left;
+  width: 24.85%;
+  margin: 0.05%;
+  height: 40px;
+  line-height: 7.5px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.setColor {
+  color: #3949ab;
+  text-align: center;
+}
+
+.leftAlign {
+  color: white;
+  padding-left: 10px;
+}
+
+.inputLeftAlign {
+  color: rgb(117, 62, 62);
+  padding-left: 10px;
+}
+
+.centerAlign {
+  text-align: center;
+  color: white;
+}
+
+.sectionHead {
+  background-color: #3949ab;
+  color: white;
+  text-align: center;
+  margin-top: 25px;
+  height: 40px;
+  line-height: 40px;
+  width: 99.9%;
+}
+
+.inputColumn {
+  background-color: rgb(232, 221, 221);
+  float: left;
+  width: 24.88%;
+  margin: 0.05%;
+  height: 40px;
+  line-height: 7.5px;
+}
+
+.inputTextColor {
+  color: rgb(117, 62, 62);
+  text-align: right;
+  padding-right: 10px;
+}
+
+.headTextColor {
+  color: rgb(117, 62, 62);
+  text-align: center;
+}
+
+/* style="background-color:#aaa;"
+  style="background-color:#bbb;" */
