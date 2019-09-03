@@ -25,7 +25,7 @@
 }
 
 .inputLeftAlign {
-  color: rgb(117, 62, 62);
+  color: rgb(58, 49, 49);
   padding-left: 10px;
 }
 
@@ -54,13 +54,13 @@
 }
 
 .inputTextColor {
-  color: rgb(117, 62, 62);
+  color: rgb(53, 37, 37);
   text-align: right;
   padding-right: 10px;
 }
 
 .headTextColor {
-  color: rgb(117, 62, 62);
+  color: rgb(53, 37, 37);
   text-align: center;
 }
 

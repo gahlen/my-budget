@@ -1,16 +1,18 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Budget.css";
 
 
-class Budget extends Component {
+class BudgetManage extends Component {
+
+  yearandmonth
+
   render() {
     return (
       <>
-
-      <\>
+      <div>Test</div>
+      </>
     );
   }
 }
 
-export default Budget;
+export default BudgetManage;

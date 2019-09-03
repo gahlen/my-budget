@@ -237,7 +237,5 @@ class Budget extends Component {
   }
 }
 
-                              //sort, total, map, setstate this.setState(() => ({entryData:  })
-
 
 export default Budget;

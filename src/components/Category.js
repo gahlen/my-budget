@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import CategoryList from "./CategoryList";
+import Ledger  from "../components/Ledger";
 import "../styles/Category.css";
-
+// move totals to top right location    Income - Budget Total = Difference
+// pull in income total for Month and     2900 - 2800 = 100  show minus sign
+// show difference between monthly budget amount compared
+// to total income.
 class Category extends Component {
   constructor(props) {
     super(props);
@@ -9,9 +13,12 @@ class Category extends Component {
       category: "",
       budgetAmount: "",
       entryData: [],
-      budgetTotal: 0
+      budgetTotal: 0,
+      incomeTotal: 0
     };
+    
   }
+
 
   getData = () => {
     fetch("http://localhost:4000/category", {
@@ -34,13 +41,19 @@ class Category extends Component {
         this.state.entryData.forEach(element => {
           this.setState({
             budgetTotal:
-              this.state.budgetTotal + parseFloat(element.budgetAmount)
-          },              console.log("total budget",this.state.budgetTotal, parseFloat(element.budgetAmount))
+              this.state.budgetTotal += parseFloat(element.budgetAmount)
+          },  
           );
         });
       })
-      .catch(err => console.log("error", err));
-  };
+    //   .then(() => {
+    //     this.setState(() => ({
+    //       incomeTotal: Ledger.getIncome()
+    //   }))
+    // })
+      .catch(err => console.log("error", err))
+  }
+
 
   componentDidMount() {
     this.getData();
@@ -53,7 +66,7 @@ class Category extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     const id = e.target.id;
-    const { entryData, ...body } = this.state;
+    const body = [{category:this.state.category, budgetAmount:this.state.budgetAmount}]
     if (this.state.category !== "" && this.state.budgetAmount !== "") {
       switch (id) {
         case "a":
@@ -137,9 +150,17 @@ class Category extends Component {
               </button>
             </div>
           </div>
-          <div className="budget">
-            <CategoryList entryData={this.state.entryData} />
-            <h3>Budget Total: {this.state.budgetTotal} </h3>
+          <div>
+            <CategoryList  entryData={this.state.entryData} />
+          </div>
+          <div className = "leftCaptionSpacing">  
+            <h3 className="budgetCaption">Income</h3> <h3>{this.state.budgetTotal} </h3>
+          </div>
+          <div className = "captionSpacing">  
+            <h3 className="budgetCaption">Budgeted</h3> <h3>{this.state.budgetTotal} </h3>
+          </div>
+          <div className = "captionSpacing">  
+            <h3 className="budgetCaption">Difference</h3> <h3>{this.state.budgetTotal} </h3>
           </div>
         </form>
       </>

@@ -5,6 +5,7 @@ import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 class Ledger extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       selected: [],
       entryData: [],
@@ -12,6 +13,17 @@ class Ledger extends Component {
       categoryData: []
     };
   }
+
+    getIncome = () => {
+    let totalIncome = 0
+    this.state.entryData.forEach(element => {
+      if (element.type === "Credit") {
+        totalIncome += parseFloat(element.amount)
+      }
+  })
+    return totalIncome
+  }
+  
 
   handleBtnClick = e => {
     e.preventDefault();
@@ -90,7 +102,7 @@ class Ledger extends Component {
     this.getBankData();
     this.getCategories();
   }
-
+  
   render() {
     const selectRow = {
       mode: "checkbox",
@@ -108,9 +120,7 @@ class Ledger extends Component {
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
       { text: "Description", dataField: "description" },
-      {
-        text: "Category",
-        dataField: "category",
+      { text: "Category",dataField: "category",
         editor: {
           type: Type.SELECT,
           getOptions: (setOptions, { row, column }) => {
@@ -147,4 +157,4 @@ class Ledger extends Component {
     );
   }
 }
-export default Ledger;
+export default Ledger
