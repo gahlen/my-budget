@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
+import { LedgerContext } from "../context/LedgerContext";
 
 class Ledger extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class Ledger extends Component {
       selected: [],
       entryData: [],
       selectData: [],
-      categoryData: []
+      categoryData: [],
+      incomeData: []
     };
   }
 
@@ -21,12 +23,12 @@ class Ledger extends Component {
         totalIncome += parseFloat(element.amount)
       }
   })
+    console.log("income",totalIncome)
     return totalIncome
   }
   
 
-  handleBtnClick = e => {
-    e.preventDefault();
+  handleBtnClick = (dataTransfer) => {
     let reference = this.state.selected;
     let putData = this.state.entryData.filter(data =>
       reference.includes(data.refNumber)
@@ -37,7 +39,8 @@ class Ledger extends Component {
       body: JSON.stringify(putData)
     })
       .then(res => res.json())
-      .then(console.log);
+      .then(this.getIncome)
+      .then(income => dataTransfer(income))        
   };
 
   handleOnSelect = (row, isSelect) => {
@@ -142,10 +145,13 @@ class Ledger extends Component {
 
     return (
       <div>
-        <button className="btn btn-success" onClick={this.handleBtnClick}>
+        <LedgerContext.Consumer>
+        {({ dataTransfer }) => (
+        <button className="btn btn-success" onClick={() => this.handleBtnClick(dataTransfer)}>
           Update
         </button>
-
+        )}
+        </LedgerContext.Consumer>
         <BootstrapTable
           keyField="refNumber"
           data={this.state.entryData}

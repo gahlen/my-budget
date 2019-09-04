@@ -8,7 +8,7 @@ const Nav = ({ login }) => {
       <Link to = "/login">Login</Link>
       <Link to = "/">Ledger</Link>
       <Link to = "/">Register</Link>
-      {/* <Link to="/auth">Register</Link> */}
+      <Link to = "/auth">Register</Link> 
       <Link to = "/report">Reports</Link>
       <Link to = "/category">Category Management</Link>
       <Link to = "/budget">Budget Summary</Link>

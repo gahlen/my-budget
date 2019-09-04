@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import CategoryList from "./CategoryList";
-import Ledger  from "../components/Ledger";
+import { LedgerContext } from "../context/LedgerContext";
 import "../styles/Category.css";
+import Ledger from "./Ledger";
 // move totals to top right location    Income - Budget Total = Difference
 // pull in income total for Month and     2900 - 2800 = 100  show minus sign
 // show difference between monthly budget amount compared
@@ -16,10 +17,8 @@ class Category extends Component {
       budgetTotal: 0,
       incomeTotal: 0
     };
-    
   }
-
-
+  
   getData = () => {
     fetch("http://localhost:4000/category", {
       method: "GET"
@@ -27,33 +26,28 @@ class Category extends Component {
       .then(res => res.json())
       .then(entries => {
         this.setState(() => ({
-          entryData: entries.sort((a,b) => {
+          entryData: entries.sort((a, b) => {
             if (a.category < b.category) {
-              return -1
+              return -1;
             }
             if (a.category > b.category) {
-              return 1
-            }           
+              return 1;
+            }
           })
-        }))
+        }));
       })
       .then(() => {
         this.state.entryData.forEach(element => {
           this.setState({
-            budgetTotal:
-              this.state.budgetTotal += parseFloat(element.budgetAmount)
-          },  
-          );
+            budgetTotal: (this.state.budgetTotal += parseFloat(
+              element.budgetAmount
+            ))
+          });
         });
       })
-    //   .then(() => {
-    //     this.setState(() => ({
-    //       incomeTotal: Ledger.getIncome()
-    //   }))
-    // })
-      .catch(err => console.log("error", err))
-  }
 
+      .catch(err => console.log("error", err));
+  };
 
   componentDidMount() {
     this.getData();
@@ -66,7 +60,8 @@ class Category extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     const id = e.target.id;
-    const body = [{category:this.state.category, budgetAmount:this.state.budgetAmount}]
+    //const body = [{category:this.state.category, budgetAmount:this.state.budgetAmount}]
+    let [{ budgetTotal, incomeTotal, ...body }] = this.state;
     if (this.state.category !== "" && this.state.budgetAmount !== "") {
       switch (id) {
         case "a":
@@ -75,22 +70,24 @@ class Category extends Component {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
           })
-            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
+            .then(() =>
+              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
+            )
             .then(() => {
               this.getData();
             });
           break;
         case "u":
           await fetch(
-            `http://localhost:4000/category/${this.state.category}/${
-              this.state.budgetAmount
-            }`,
+            `http://localhost:4000/category/${this.state.category}/${this.state.budgetAmount}`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" }
             }
           )
-            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
+            .then(() =>
+              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
+            )
             .then(() => {
               this.getData();
             });
@@ -100,7 +97,9 @@ class Category extends Component {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
           })
-            .then(() => this.setState({ category: "", budgetAmount: "", budgetTotal: 0 }))
+            .then(() =>
+              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
+            )
             .then(() => {
               this.getData();
             });
@@ -151,16 +150,23 @@ class Category extends Component {
             </div>
           </div>
           <div>
-            <CategoryList  entryData={this.state.entryData} />
+            <CategoryList entryData={this.state.entryData} />
           </div>
-          <div className = "leftCaptionSpacing">  
-            <h3 className="budgetCaption">Income</h3> <h3>{this.state.budgetTotal} </h3>
+          <div className="leftCaptionSpacing">
+            <h3 className="budgetCaption">Income</h3>
+            <LedgerContext.Consumer>
+              {({ contextData }) => <h3>{ contextData }</h3>}
+            </LedgerContext.Consumer>
           </div>
-          <div className = "captionSpacing">  
-            <h3 className="budgetCaption">Budgeted</h3> <h3>{this.state.budgetTotal} </h3>
+          <div className="captionSpacing">
+            <h3 className="budgetCaption">Budgeted</h3>{" "}
+            <h3>{this.state.budgetTotal} </h3>
           </div>
-          <div className = "captionSpacing">  
-            <h3 className="budgetCaption">Difference</h3> <h3>{this.state.budgetTotal} </h3>
+          <div className="captionSpacing">
+            <h3 className=" budgetCaption">Difference</h3>{" "}
+            <LedgerContext.Consumer>
+              {({ contextData }) => <h3>{eval(contextData - this.state.budgetTotal).toFixed(2)}</h3>}
+            </LedgerContext.Consumer>
           </div>
         </form>
       </>
