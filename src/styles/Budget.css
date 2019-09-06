@@ -7,6 +7,15 @@
   line-height: 7.5px;
 }
 
+.column4 {
+  background-color: #3949ab;
+  float: left;
+  width: 19.85%;
+  margin: 0.05%;
+  height: 40px;
+  line-height: 7.5px;
+}
+
 /* Clear floats after the columns */
 .row:after {
   content: "";
@@ -48,6 +57,15 @@
   background-color: rgb(232, 221, 221);
   float: left;
   width: 24.88%;
+  margin: 0.05%;
+  height: 40px;
+  line-height: 7.5px;
+}
+
+.inputColumn4 {
+  background-color: rgb(232, 221, 221);
+  float: left;
+  width: 19.88%;
   margin: 0.05%;
   height: 40px;
   line-height: 7.5px;

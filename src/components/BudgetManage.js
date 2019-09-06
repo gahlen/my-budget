@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CustomModal from "../config/Modal";
+import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 import BootstrapTable from "react-bootstrap-table-next";
 import { LedgerContext } from "../context/LedgerContext";
 
@@ -54,28 +54,28 @@ class BudgetManage extends Component {
     }
   };
 
-  // getCategories = () => {
-  //   fetch("http://localhost:4000/category", {
-  //     method: "GET"
-  //   })
-  //     .then(res => res.json())
-  //     .then(entries => {
-  //       this.setState(() => ({
-  //         categoryData: entries.sort((a,b) => {
-  //           if (a.category < b.category) {
-  //             return -1
-  //           }
-  //           if (a.category > b.category) {
-  //             return 1
-  //           }           
-  //         })
-  //       }));
-  //     })
-  //     .catch(err => console.log("error", err));
-  // };
+  getCategories = () => {
+    fetch("http://localhost:4000/category", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(entries => {
+        this.setState(() => ({
+          categoryData: entries.sort((a,b) => {
+            if (a.category < b.category) {
+              return -1
+            }
+            if (a.category > b.category) {
+              return 1
+            }           
+          })
+        }));
+      })
+      .catch(err => console.log("error", err));
+  };
 
   getBankData = () => {
-    fetch("http://localhost:4000/ledger", {
+    fetch("http://localhost:4000/summary", {
       method: "GET"
     })
       .then(res => res.json())
@@ -87,40 +87,50 @@ class BudgetManage extends Component {
       .catch(err => console.log("error", err));
   };
 
-  componentDidMount() { 
-      this.getBankData()
+  componentDidMount() {
+    this.getBankData();
+    this.getCategories();
   }
   
   render() {
     const selectRow = {
       mode: 'radio',
+      hideSelectColumn: false,
       clickToSelect: true,
+      clickToEdit: true,
       selected: this.state.selected,
       onSelect: this.handleOnSelect,
+      onSelectAll: this.handleOnSelectAll,
       bgColor: "#def3ff"
 
     };
-    // const selectRow = {
-    //   mode: "checkbox",
-    //   hideSelectColumn: false,
-    //   clickToSelect: true,
-    //   clickToEdit: true,
-    //   selected: this.state.selected,
-    //   onSelect: this.handleOnSelect,
-    //   onSelectAll: this.handleOnSelectAll,
-    //   bgColor: "#def3ff"
-    // };
 
     const columns = [
-      { text: "Post Date", dataField: "effectiveDate" },
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
       { text: "Description", dataField: "description" },
-      { text: "Category",dataField: "category"},
+      {
+        text: "Category",
+        dataField: "category",
+        editor: {
+          type: Type.SELECT,
+          getOptions: (setOptions, { row, column }) => {
+            return this.state.categoryData.map(category => ({
+              value: category.category,
+              label: category.category
+            }));
+          }
+        }
+      },
       { text: "Amount", dataField: "amount" },
       { text: "Budgeted", dataField: "budgeted" }
 
-    ];
+    ]; 
+
+    const cellEdit = cellEditFactory({
+      mode: "click",
+      blurToSave: true
+    });
 
     return (
       <div>
@@ -131,26 +141,14 @@ class BudgetManage extends Component {
         </button>
         )}
         </LedgerContext.Consumer>
-        <button className="btn btn-success" onClick={this.handleImportBtnClick}>
-          Import
-        </button>
+        
         <BootstrapTable 
           keyField="refNumber"
           data={this.state.entryData}
           columns={columns}
+          cellEdit={cellEdit}
           selectRow={selectRow}
         />
-        {/* <div>
-        <div>{row.refNumber}</div>
-        <div>{row.company}</div>
-        <div>{leadData.applied_thru}</div>
-        <CustomModal btnText="Update" title="Update Lead">
-          <UpdateLead reload={reload} lead={leadData} />
-        </CustomModal>
-        <CustomModal btnText="Delete" title="Delete Lead">
-          <DeleteLead reload={reload} id={leadData._id} />
-        </CustomModal>
-      </div> */}
       </div>
     );
   }

@@ -7,6 +7,7 @@ class Budget extends Component {
     this.state = {
       entryData: [],
       budgetTotal: 0,
+      budgetBalance: 0,
       actualTotal: 0,
       differenceTotal: 0
     };
@@ -28,15 +29,18 @@ class Budget extends Component {
       )
       .then((sorted) => {
         let tempBudget = 0
+        let tempBalance = 0
         let tempActual = 0
         let tempDifference = 0
         sorted.forEach(element => {
               tempBudget += parseFloat(element.budget)
+              tempBalance += parseFloat(element.carryover)
               tempActual += parseFloat(element.amount)
               tempDifference += parseFloat(element.difference)
           })
           this.setState({
             budgetTotal: tempBudget,
+            budgetBalance: tempBalance,
             actualTotal: tempActual,
             differenceTotal: eval(tempDifference).toFixed(2)
           })
@@ -46,16 +50,19 @@ class Budget extends Component {
       .then((categories) => {
         return categories.map((category) => 
             (<div className="row">
-              <div className="inputColumn">
+              <div className="inputColumn4">
                 <h3 className="inputLeftAlign">{category.category}</h3>
               </div>
-              <div className="inputColumn">
+              <div className="inputColumn4">
                 <h3 className="inputTextColor">{category.budget}</h3>
               </div>
-              <div className="inputColumn">
+              <div className="inputColumn4">
+                <h3 className="inputTextColor">{category.carryover}</h3>
+              </div>
+              <div className="inputColumn4">
                 <h3 className="inputTextColor">{category.amount}</h3>
               </div>
-              <div className="inputColumn">
+              <div className="inputColumn4">
                 <h3 className="inputTextColor">{category.difference}</h3>
               </div>
             </div>)
@@ -202,31 +209,37 @@ class Budget extends Component {
           <h3>EXPENDITURE</h3>
         </div>
         <div className="row">
-          <div className="inputColumn">
+          <div className="inputColumn4">
             <h3 className="inputLeftAlign">Category</h3>
           </div>
-          <div className="inputColumn">
+          <div className="inputColumn4">
             <h3 className="headTextColor">Budget</h3>
           </div>
-          <div className="inputColumn">
-            <h3 className="headTextColor">Actual</h3>
+          <div className="inputColumn4">
+            <h3 className="headTextColor">Carryover</h3>
           </div>
-          <div className="inputColumn">
-            <h3 className="headTextColor">Difference</h3>
+          <div className="inputColumn4">
+            <h3 className="headTextColor">Expense</h3>
+          </div>
+          <div className="inputColumn4">
+            <h3 className="headTextColor">Balance</h3>
           </div>
         </div>
         {this.state.entryData}
         <div className="row">
-          <div className="column">
+          <div className="column4">
             <h3 className="leftAlign">Total</h3>
           </div>
-          <div className="column">
+          <div className="column4">
             <h3 className="centerAlign">{this.state.budgetTotal}</h3>
           </div>
-          <div className="column">
-            <h3 className="centerAlign">{this.state.actualTotal}</h3>
+          <div className="column4">
+            <h3 className="centerAlign">{this.state.budgetBalance}</h3>
           </div>
-          <div className="column">
+          <div className="column4">
+            <h3 className="centerAlign">{this.state.actualTotal}</h3>
+          </div>         
+          <div className="column4">
             <h3 className="centerAlign">{this.state.differenceTotal}</h3>
           </div>
         </div>

@@ -3,7 +3,8 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 const columns = [
   { text: "Category", dataField: "category" },
-  { text: "Budgeted Amount", dataField: "budgetAmount" }
+  { text: "Base Budget", dataField: "budgetAmount" },
+  { text: "Budget Balance", dataField: "budgetBalance"}
 ];
 
 class CategoryList extends Component {

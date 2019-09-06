@@ -11,6 +11,7 @@ class Category extends Component {
       category: "",
       budgetAmount: "",
       entryData: [],
+      budgetBalance: "",
       budgetTotal: 0,
       incomeTotal: 0
     };
@@ -58,32 +59,20 @@ class Category extends Component {
     e.preventDefault();
     const id = e.target.id;
     //const body = [{category:this.state.category, budgetAmount:this.state.budgetAmount}]
-    let [{ budgetTotal, incomeTotal, ...body }] = this.state;
+    //let [{ category, budgetAmount, budgetBalance }] = this.state;
     if (this.state.category !== "" && this.state.budgetAmount !== "") {
       switch (id) {
-        case "a":
-          await fetch("http://localhost:4000/category", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-          })
-            .then(() =>
-              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
-            )
-            .then(() => {
-              this.getData();
-            });
-          break;
+        
         case "u":
           await fetch(
-            `http://localhost:4000/category/${this.state.category}/${this.state.budgetAmount}`,
+            `http://localhost:4000/category/${this.state.category}/${this.state.budgetAmount}/${this.state.budgetBalance}`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" }
             }
           )
             .then(() =>
-              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
+              this.setState({ category: "", budgetAmount: "", budgetBalance: "", budgetTotal: 0 })
             )
             .then(() => {
               this.getData();
@@ -95,7 +84,7 @@ class Category extends Component {
             headers: { "Content-Type": "application/json" }
           })
             .then(() =>
-              this.setState({ category: "", budgetAmount: "", budgetTotal: 0 })
+              this.setState({ category: "", budgetAmount: "", budgetBalance: "", budgetTotal: 0 })
             )
             .then(() => {
               this.getData();
@@ -134,10 +123,19 @@ class Category extends Component {
               value={this.state.budgetAmount}
               onChange={this.handleChange}
             />
+
+            <label htmlFor="budgetBalance">
+              <b>Budget Balance</b>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Balance"
+              name="budgetBalance"
+              value={this.state.budgetBalance}
+              onChange={this.handleChange}
+            />
+
             <div>
-              <button id="a" onClick={this.handleSubmit} type="submit">
-                Add
-              </button>
               <button id="u" onClick={this.handleSubmit} type="submit">
                 Update
               </button>
@@ -146,9 +144,11 @@ class Category extends Component {
               </button>
             </div>
           </div>
+
           <div>
             <CategoryList entryData={this.state.entryData} />
           </div>
+
           <div className="leftCaptionSpacing">
             <h3 className="budgetCaption">Income</h3>
             <LedgerContext.Consumer>
