@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 import { LedgerContext } from "../context/LedgerContext";
 
 class Ledger extends Component {
@@ -10,7 +9,6 @@ class Ledger extends Component {
     this.state = {
       selected: [],
       entryData: [],
-      selectData: [],
       categoryData: [],
       incomeData: []
     };
@@ -23,7 +21,6 @@ class Ledger extends Component {
         totalIncome += parseFloat(element.amount)
       }
   })
-    console.log("income",totalIncome)
     return totalIncome
   }
   
@@ -33,7 +30,8 @@ class Ledger extends Component {
     let putData = this.state.entryData.filter(data =>
       reference.includes(data.refNumber)
     );
-    fetch("http://localhost:4000/ledger/", {
+    console.log("put entries",putData)
+    fetch("http://localhost:4000/summary/", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(putData)
@@ -68,28 +66,28 @@ class Ledger extends Component {
     }
   };
 
-  getCategories = () => {
-    fetch("http://localhost:4000/category", {
-      method: "GET"
-    })
-      .then(res => res.json())
-      .then(entries => {
-        this.setState(() => ({
-          categoryData: entries.sort((a,b) => {
-            if (a.category < b.category) {
-              return -1
-            }
-            if (a.category > b.category) {
-              return 1
-            }           
-          })
-        }));
-      })
-      .catch(err => console.log("error", err));
-  };
+  // getCategories = () => {
+  //   fetch("http://localhost:4000/category", {
+  //     method: "GET"
+  //   })
+  //     .then(res => res.json())
+  //     .then(entries => {
+  //       this.setState(() => ({
+  //         categoryData: entries.sort((a,b) => {
+  //           if (a.category < b.category) {
+  //             return -1
+  //           }
+  //           if (a.category > b.category) {
+  //             return 1
+  //           }           
+  //         })
+  //       }));
+  //     })
+  //     .catch(err => console.log("error", err));
+  // };
 
   getBankData = () => {
-    fetch("http://localhost:4000/", {
+    fetch("http://localhost:4000/ledger", {
       method: "GET"
     })
       .then(res => res.json())
@@ -101,9 +99,8 @@ class Ledger extends Component {
       .catch(err => console.log("error", err));
   };
 
-  componentDidMount() {
-    this.getBankData();
-    this.getCategories();
+  componentDidMount() { 
+      this.getBankData()
   }
   
   render() {
@@ -123,25 +120,10 @@ class Ledger extends Component {
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
       { text: "Description", dataField: "description" },
-      { text: "Category",dataField: "category",
-        editor: {
-          type: Type.SELECT,
-          getOptions: (setOptions, { row, column }) => {
-            return this.state.categoryData.map(category => ({
-              value: category.category,
-              label: category.category
-            }));
-          }
-        }
-      },
+      { text: "Category",dataField: "category"},
       { text: "Amount", dataField: "amount" },
       { text: "Balance", dataField: "balance" }
     ];
-
-    const cellEdit = cellEditFactory({
-      mode: "click",
-      blurToSave: true
-    });
 
     return (
       <div>
@@ -152,11 +134,13 @@ class Ledger extends Component {
         </button>
         )}
         </LedgerContext.Consumer>
-        <BootstrapTable
+        <button className="btn btn-success" onClick={this.handleImportBtnClick}>
+          Import
+        </button>
+        <BootstrapTable 
           keyField="refNumber"
           data={this.state.entryData}
           columns={columns}
-          cellEdit={cellEdit}
           selectRow={selectRow}
         />
       </div>

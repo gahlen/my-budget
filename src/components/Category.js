@@ -3,10 +3,7 @@ import CategoryList from "./CategoryList";
 import { LedgerContext } from "../context/LedgerContext";
 import "../styles/Category.css";
 import Ledger from "./Ledger";
-// move totals to top right location    Income - Budget Total = Difference
-// pull in income total for Month and     2900 - 2800 = 100  show minus sign
-// show difference between monthly budget amount compared
-// to total income.
+
 class Category extends Component {
   constructor(props) {
     super(props);

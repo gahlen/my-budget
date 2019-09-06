@@ -20,7 +20,6 @@ const Routes = ({ addContact, login }) => {
       <Route path="/categorylist" component={CategoryList} />
       <Route path="/budget" component={Budget} />
       <Route path="/budgetManage" component={BudgetManage} />
-
     </>
   );
 };

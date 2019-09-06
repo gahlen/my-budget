@@ -35,3 +35,29 @@ input[type=text], input[type=password], input[type=email]{
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+
+.tableHeight {
+  background-color: #f2cd75;
+}
+th, td {
+  border-bottom: 1px solid #f2cd75;
+}
+
+tr {
+  border: 100px;
+  border-color: #f2cd75;
+  height: 50px;
+
+}
+
+tr:nth-child(2n) {
+  background-color: #75d9f2; 
+}
+
+tr:not(.active):hover td {
+  background: #e99 !important;
+}
+
+th {
+  background-color: #75d9f2;
+}
