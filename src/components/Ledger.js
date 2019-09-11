@@ -116,7 +116,7 @@ class Ledger extends Component {
     };
 
     const columns = [
-      { text: "Post Date", dataField: "effectiveDate" },
+      { text: "Post Date", dataField: "postDate" },
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
       { text: "Description", dataField: "description" },

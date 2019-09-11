@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import cellEditFactory, { Type } from "react-bootstrap-table2-editor";
 import BootstrapTable from "react-bootstrap-table-next";
 import { LedgerContext } from "../context/LedgerContext";
 
@@ -13,6 +12,40 @@ class BudgetManage extends Component {
       categoryData:[],
       incomeData:[]
     };
+  }
+
+  getData = () => {
+    fetch("http://localhost:4000/category", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(entries => {
+        this.setState(() => ({
+          categoryData: entries.sort((a, b) => {
+            if (a.category < b.category) {
+              return -1;
+            }
+            if (a.category > b.category) {
+              return 1;
+            }
+          })
+        }));
+      })
+      .then(() => {
+        this.state.categoryData.forEach(element => {
+          this.setState({
+            budgetTotal: (this.state.budgetTotal += parseFloat(
+              element.budgetAmount
+            ))
+          });
+        });
+      })
+
+      .catch(err => console.log("error", err));
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
     getIncome = () => {
@@ -46,7 +79,17 @@ class BudgetManage extends Component {
       this.setState(() => ({
         selected: [...this.state.selected, row.refNumber]
       }));
-      console.log("row selected+++++++++",this.state.selected,row.amount  )
+      console.log("row selected+++++++++",this.state.selected,row.refNumber  )
+      this.props.history.push({
+        pathname:"/budgetTrans",
+        state:{
+            desc: row.description,
+            ref: row.refNumber,
+            amt: row.amount,
+            cat: row.category,
+            type: row.type
+         }
+       });
     } else {
       this.setState(() => ({
         selected: this.state.selected.filter(x => x !== row.refNumber)
@@ -94,43 +137,24 @@ class BudgetManage extends Component {
   
   render() {
     const selectRow = {
-      mode: 'radio',
-      hideSelectColumn: false,
+      hideSelectColumn: true,
       clickToSelect: true,
-      clickToEdit: true,
       selected: this.state.selected,
       onSelect: this.handleOnSelect,
       onSelectAll: this.handleOnSelectAll,
       bgColor: "#def3ff"
-
     };
 
     const columns = [
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
+      { text: "Post Date", dataField: "postDate" },
       { text: "Description", dataField: "description" },
-      {
-        text: "Category",
-        dataField: "category",
-        editor: {
-          type: Type.SELECT,
-          getOptions: (setOptions, { row, column }) => {
-            return this.state.categoryData.map(category => ({
-              value: category.category,
-              label: category.category
-            }));
-          }
-        }
-      },
+      { text: "Category", dataField: "category" },
       { text: "Amount", dataField: "amount" },
-      { text: "Budgeted", dataField: "budgeted" }
-
+      { text: "Budgeted", dataField: "budgeted" },
+      { text: "Split", dataField: "split" }
     ]; 
-
-    const cellEdit = cellEditFactory({
-      mode: "click",
-      blurToSave: true
-    });
 
     return (
       <div>
@@ -146,7 +170,6 @@ class BudgetManage extends Component {
           keyField="refNumber"
           data={this.state.entryData}
           columns={columns}
-          cellEdit={cellEdit}
           selectRow={selectRow}
         />
       </div>

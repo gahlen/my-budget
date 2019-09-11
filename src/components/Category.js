@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import CategoryList from "./CategoryList";
 import { LedgerContext } from "../context/LedgerContext";
 import "../styles/Category.css";
-import Ledger from "./Ledger";
 
 class Category extends Component {
   constructor(props) {

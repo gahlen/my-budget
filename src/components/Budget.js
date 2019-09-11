@@ -40,8 +40,8 @@ class Budget extends Component {
           })
           this.setState({
             budgetTotal: tempBudget,
-            budgetBalance: tempBalance,
-            actualTotal: tempActual,
+            budgetBalance: eval(tempBalance).toFixed(2),
+            actualTotal: eval(tempActual).toFixed(2),
             differenceTotal: eval(tempDifference).toFixed(2)
           })
           

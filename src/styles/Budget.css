@@ -82,5 +82,42 @@
   text-align: center;
 }
 
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  background-color: #fcf2dc;
+}
+
+.flexRow{
+  display: flex;
+  justify-content: space-around;
+}
+
+.inputSize {
+  width: 15%;
+  padding: 12px 15px;
+  margin: 8px 0;
+  border-radius: 5px;
+  box-sizing: border-box;
+
+}
+
+.btnSize {
+  width: 5%;
+  padding: 10px 10px;
+}
+
+.btnDlt {
+  height: 15px;
+  width: 15px;
+  padding: 0px;
+}
+
+.unCatAmt {
+  text-align: right;
+  margin-right: 185px;
+
+}
+
 /* style="background-color:#aaa;"
   style="background-color:#bbb;" */

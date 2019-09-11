@@ -1,6 +1,5 @@
 import React from "react";
 import ReactModal from "react-modal";
-// import { LEADS_API } from "../../config/coms";
 
 const customStyles = {
   content: { 

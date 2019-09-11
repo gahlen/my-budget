@@ -8,6 +8,7 @@ import CategoryList from "../components/CategoryList"
 import Budget from "../components/Budget"
 import BudgetManage from "../components/BudgetManage"
 import ResetPassword from "../components/ResetPassword"
+import BudgetTrans from "../components/BudgetTrans";
 
 const Routes = ({ addContact, login }) => {
   return (
@@ -20,6 +21,8 @@ const Routes = ({ addContact, login }) => {
       <Route path="/categorylist" component={CategoryList} />
       <Route path="/budget" component={Budget} />
       <Route path="/budgetManage" component={BudgetManage} />
+      <Route path="/budgetTrans" component={BudgetTrans} />
+
     </>
   );
 };
