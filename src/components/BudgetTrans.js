@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { BUDGET_API } from "../config/Coms";
+import { Redirect } from "react-router-dom";
 
 class BudgetTrans extends Component {
   constructor(props) {
@@ -7,23 +8,23 @@ class BudgetTrans extends Component {
     this.state = {
       transaction: [
         {
-          desc: this.props.location.state.desc,
-          cat: this.props.location.state.cat,
-          amt: this.props.location.state.amt,
-          ref: this.props.location.state.ref
+          description: this.props.location.state.description,
+          category: this.props.location.state.category,
+          amount: this.props.location.state.amount,
+          refNumber: this.props.location.state.refNumber,
+          processed: this.props.location.state.processed,
+          postDate: this.props.location.state.postDate
         }
       ],
       categoryData: [],
       newRefNum: 0,
-      showing: false,
-      amtBal: 0,
-      checked: false,
+      amtBal: this.props.location.state.amount,
       redirect: false
     };
   }
 
   getData = () => {
-    fetch("http://localhost:4000/category", {
+    fetch(`${BUDGET_API}/category`, {
       method: "GET"
     })
       .then(res => res.json())
@@ -39,33 +40,23 @@ class BudgetTrans extends Component {
           })
         }));
       })
-      .then(() => {
-        this.state.categoryData.forEach(element => {
-          this.setState({
-            budgetTotal: (this.state.budgetTotal += parseFloat(
-              element.budgetAmount
-            ))
-          });
-        });
-      })
 
       .catch(err => console.log("error", err));
   };
 
-  componentDidMount() {
-    this.getData();
-  }
-
   handleChange = (e, i) => {
     let list = [...this.state.transaction];
     list[i][e.target.name] = e.target.value;
+    console.log("list",list)
     this.setState({ transaction: list });
-    this.setState({amtBal: list.reduce((acc, cur) => acc + parseFloat(cur.amt),0)})
+    this.setState({ amtBal: list.reduce((acc, cur) =>  parseFloat(cur.amount) + acc,0)- this.props.location.state.amount})
   };
 
   handleDelete = async ref => {
-    let newTrans = await this.state.transaction.filter(num => num.ref != ref);
+    let newTrans = await this.state.transaction.filter(num => num.refNumber !== ref);
     this.setState({ transaction: newTrans });
+    this.setState({ amtBal: this.state.transaction.reduce((acc, cur) =>  parseFloat(cur.amount) + acc,0)- this.props.location.state.amount})
+
   };
 
   handleSplit = event => {
@@ -74,29 +65,43 @@ class BudgetTrans extends Component {
       transaction: [
         ...prevState.transaction,
         {
-          desc: "",
-          cat: "",
-          amt: "",
-          ref: `${this.props.location.state.ref}-${this.state.newRefNum}`
+          description: "",
+          category: "",
+          amount: "",
+          refNumber: `${this.props.location.state.refNumber}-${this.state.newRefNum}`,
+          processed: "",
+          postDate: this.props.location.state.postDate
         }
       ]
     }));
     this.setState({ newRefNum: (this.state.newRefNum += 1) });
   };
 
-  handleSubmit = async event => {
+  handleUpdate = async event => {
     event.preventDefault();
-    this.setState({ redirect: true });
+    const newTrans = this.state.transaction.map(cur => Object.assign(cur,{processed:true}))
+    this.setState({transaction:newTrans})
+    console.log("put entries",newTrans)
+    await fetch(`${BUDGET_API}/summary/`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTrans)
+    })
+      .then(res => res.json())
+      this.setState({ redirect: true });
   };
+
+  componentDidMount() {
+    this.getData();
+  }
 
   render() {
     const ifRedirect = this.state.redirect;
-    const { showing } = this.state;
 
     return (
       <React.Fragment>
         {ifRedirect ? (
-          <Redirect to="/BudgetManage" />
+          <Redirect to="/BudgetManage"/>
         ) : (
           <>
             <form
@@ -105,38 +110,38 @@ class BudgetTrans extends Component {
             >
               {this.state.transaction.map((trans, i) => (
                 <div className="flexRow" key={i}>
-                  <label htmlFor="description">
-                    <b>Ref Number</b>
+                  <label className="descLabel" htmlFor="description">
+                    <b>Ref #</b>
                   </label>
                   <input
                     className="inputSize"
                     type="refNum"
                     placeholder="refNumber"
                     name="refNumber"
-                    value={trans.ref}
+                    value={trans.refNumber}
                     onChange={e => this.handleChange(e, i)}
                     required
                   />
-                  <label htmlFor="description">
+                  <label className="descLabel" htmlFor="description">
                     <b>Description</b>
                   </label>
                   <input
                     className="inputSize"
-                    type="desc"
+                    type="text"
                     placeholder="Description"
-                    name="desc"
-                    value={trans.desc}
+                    name="description"
+                    value={trans.description}
                     onChange={e => this.handleChange(e, i)}
                     required
                   />
 
-                  <label htmlFor="category">
+                  <label className="descLabel" htmlFor="category">
                     <b>Category</b>
                   </label>
                   <select
                     className="inputSize"
-                    name="cat"
-                    value={trans.cat}
+                    name="category"
+                    value={trans.category}
                     onChange={e => this.handleChange(e, i)}
                     required
                   >
@@ -147,35 +152,30 @@ class BudgetTrans extends Component {
                     ))}
                   </select>
 
-                  <label htmlFor="amount">
+                  <label className="descLabel" htmlFor="amount">
                     <b>Amount</b>
                   </label>
                   <input
                     className="inputSize"
                     type="amount"
                     placeholder="amount"
-                    name="amt"
-                    value={trans.amt}
+                    name="amount"
+                    value={trans.amount}
                     onChange={e => this.handleChange(e, i)}
                     required
                   />
-                  <button
-                    className="btnDlt"
-                    onClick={() => this.handleDelete(trans.ref)}
-                  >
-                    X
-                  </button>
+                  <button className="btnDlt" onClick={() => this.handleDelete(trans.refNumber)}
+                  > X </button>
                 </div>
               ))}
               
-              <output className="unCatAmt">Uncatagorized Amount - $ {this.state.amtBal}</output>
-            
-
+              <output className="unCatAmt">Unsplit Amount - $ {eval(this.state.amtBal).toFixed(2)}</output>
+          
               <button className="btnSize" onClick={this.handleSplit}>
                 Split
               </button>
 
-              <button className="btnSize" type="submit">
+              <button className="btnSize" type="submit" onClick={this.handleUpdate}>
                 Update
               </button>
             </form>

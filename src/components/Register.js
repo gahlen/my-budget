@@ -49,18 +49,6 @@ class Register extends React.Component {
               required
             />
 
-            <label htmlFor="lastname">
-              <b>Last Name</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Last Name"
-              name="lastname"
-              value={this.state.lastname}
-              onChange={this.handleChange}
-              required
-            />
-
             <label htmlFor="email">
               <b>Email</b>
             </label>
@@ -69,30 +57,6 @@ class Register extends React.Component {
               placeholder="Enter Email"
               name="email"
               value={this.state.email}
-              onChange={this.handleChange}
-              required
-            />
-
-            <label htmlFor="phone">
-              <b>Phone</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Phone"
-              name="phone"
-              value={this.state.phone}
-              onChange={this.handleChange}
-              required
-            />
-
-            <label htmlFor="age">
-              <b>Age</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Your Age"
-              name="age"
-              value={this.state.age}
               onChange={this.handleChange}
               required
             />

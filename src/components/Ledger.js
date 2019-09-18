@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import { BUDGET_API } from "../config/Coms";
 import { LedgerContext } from "../context/LedgerContext";
 
 class Ledger extends Component {
@@ -25,13 +26,13 @@ class Ledger extends Component {
   }
   
 
-  handleBtnClick = (dataTransfer) => {
+  handleUpdate = (dataTransfer) => {
     let reference = this.state.selected;
     let putData = this.state.entryData.filter(data =>
       reference.includes(data.refNumber)
     );
     console.log("put entries",putData)
-    fetch("http://localhost:4000/summary/", {
+    fetch(`${BUDGET_API}/summary/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(putData)
@@ -66,28 +67,8 @@ class Ledger extends Component {
     }
   };
 
-  // getCategories = () => {
-  //   fetch("http://localhost:4000/category", {
-  //     method: "GET"
-  //   })
-  //     .then(res => res.json())
-  //     .then(entries => {
-  //       this.setState(() => ({
-  //         categoryData: entries.sort((a,b) => {
-  //           if (a.category < b.category) {
-  //             return -1
-  //           }
-  //           if (a.category > b.category) {
-  //             return 1
-  //           }           
-  //         })
-  //       }));
-  //     })
-  //     .catch(err => console.log("error", err));
-  // };
-
   getBankData = () => {
-    fetch("http://localhost:4000/ledger", {
+    fetch(`${BUDGET_API}/ledger`, {
       method: "GET"
     })
       .then(res => res.json())
@@ -129,14 +110,12 @@ class Ledger extends Component {
       <div>
         <LedgerContext.Consumer>
         {({ dataTransfer }) => (
-        <button className="btn btn-success" onClick={() => this.handleBtnClick(dataTransfer)}>
+        <button className="btn btn-success" onClick={() => this.handleUpdate(dataTransfer)}>
           Update
         </button>
         )}
         </LedgerContext.Consumer>
-        <button className="btn btn-success" onClick={this.handleImportBtnClick}>
-          Import
-        </button>
+    
         <BootstrapTable 
           keyField="refNumber"
           data={this.state.entryData}

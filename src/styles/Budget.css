@@ -94,11 +94,13 @@
 }
 
 .inputSize {
-  width: 15%;
+  font-size: 12px;
+  width: 10%;
   padding: 12px 15px;
   margin: 8px 0;
   border-radius: 5px;
   box-sizing: border-box;
+  box-shadow: inset -1px -1px 2px rgb(158, 155, 155);
 
 }
 
@@ -117,6 +119,11 @@
   text-align: right;
   margin-right: 185px;
 
+}
+
+.descLabel {
+  text-align: right;
+  padding: 10px;
 }
 
 /* style="background-color:#aaa;"

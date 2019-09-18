@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import CategoryList from "./CategoryList";
 import { LedgerContext } from "../context/LedgerContext";
+import { BUDGET_API } from "../config/Coms";
+
 import "../styles/Category.css";
 
 class Category extends Component {
@@ -17,13 +19,13 @@ class Category extends Component {
   }
   
   getData = () => {
-    fetch("http://localhost:4000/category", {
+    fetch(`${BUDGET_API}/category`, {
       method: "GET"
     })
       .then(res => res.json())
       .then(entries => {
         this.setState(() => ({
-          entryData: entries.sort((a, b) => {
+          entryData: entries.sort((a, b) => { // binary sort
             if (a.category < b.category) {
               return -1;
             }
@@ -57,14 +59,12 @@ class Category extends Component {
   handleSubmit = async e => {
     e.preventDefault();
     const id = e.target.id;
-    //const body = [{category:this.state.category, budgetAmount:this.state.budgetAmount}]
-    //let [{ category, budgetAmount, budgetBalance }] = this.state;
     if (this.state.category !== "" && this.state.budgetAmount !== "") {
       switch (id) {
         
         case "u":
           await fetch(
-            `http://localhost:4000/category/${this.state.category}/${this.state.budgetAmount}/${this.state.budgetBalance}`,
+            `${BUDGET_API}/category/${this.state.category}/${this.state.budgetAmount}/${this.state.budgetBalance}`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" }
@@ -78,7 +78,7 @@ class Category extends Component {
             });
           break;
         case "d":
-          await fetch(`http://localhost:4000/category/${this.state.category}`, {
+          await fetch(`${BUDGET_API}/category/${this.state.category}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
           })
@@ -100,10 +100,14 @@ class Category extends Component {
       <>
         <form className="container animate">
           <div className="flexButton">
+          <LedgerContext.Consumer>
+              {({ startDate }) => <h3> Budget Dates: { startDate }</h3>}
+            </LedgerContext.Consumer>
             <label htmlFor="category">
               <b>Category</b>
             </label>
             <input
+              className="inputSize"
               type="text"
               placeholder="Enter Category"
               name="category"
@@ -116,6 +120,7 @@ class Category extends Component {
               <b>Budget Amount</b>
             </label>
             <input
+              className="inputSize"
               type="text"
               placeholder="Enter Amount"
               name="budgetAmount"
@@ -124,9 +129,10 @@ class Category extends Component {
             />
 
             <label htmlFor="budgetBalance">
-              <b>Budget Balance</b>
+              <b>Balance Forward</b>
             </label>
             <input
+              className="inputSize"
               type="text"
               placeholder="Enter Balance"
               name="budgetBalance"

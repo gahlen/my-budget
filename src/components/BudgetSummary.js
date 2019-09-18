@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { BUDGET_API } from "../config/Coms";
 import "../styles/Budget.css";
 
-class Budget extends Component {
+class BudgetSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +15,7 @@ class Budget extends Component {
   }
 
   getData = () => {
-    fetch("http://localhost:4000/budget", {
+    fetch(`${BUDGET_API}/budget`, {
       method: "GET"
     })
       .then(res => res.json())  //sort, total, map, setstate this.setState(() => ({entryData:  })
@@ -40,9 +41,9 @@ class Budget extends Component {
           })
           this.setState({
             budgetTotal: tempBudget,
-            budgetBalance: eval(tempBalance).toFixed(2),
-            actualTotal: eval(tempActual).toFixed(2),
-            differenceTotal: eval(tempDifference).toFixed(2)
+            budgetBalance: (tempBalance).toFixed(2),
+            actualTotal: (tempActual).toFixed(2),
+            differenceTotal: (tempDifference).toFixed(2)
           })
           
           return(sorted)
@@ -251,4 +252,4 @@ class Budget extends Component {
 }
 
 
-export default Budget;
+export default BudgetSummary;

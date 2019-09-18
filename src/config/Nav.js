@@ -5,13 +5,14 @@ import "../styles/Nav.css";
 const Nav = ({ login }) => {
   return (
     <nav className="navbar">
-      <Link to = "/login">Login</Link>
-      <Link to = "/">Ledger</Link>
-      <Link to = "/auth">Register</Link> 
-      <Link to = "/report">Reports</Link>
-      <Link to = "/category">Category Management</Link>
-      <Link to = "/budget">Budget Summary</Link>
-      <Link to = "/budgetManage">Budget Management</Link>
+      <Link className= "left-align" to = "/home">Home</Link>
+      <Link className= "left-align" to = "/ledger">Ledger</Link>
+      <Link className= "left-align" to = "/category">Category Management</Link>
+      <Link className= "left-align" to = "/budgetSummary">Budget Summary</Link>
+      <Link className= "left-align" to = "/budgetManage">Budget Management</Link>
+      <Link className= "left-align" to = "/report">Reports</Link>
+      <Link className= "right-align" to = "/auth">Register</Link> 
+      <Link className= "right-align" to = "/login">Login</Link>
     </nav>
   );
 };
