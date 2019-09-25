@@ -50,11 +50,17 @@ form {
     vertical-align:right;
   }
 
-  .flexButton {
+  .flexPage {
     display: flex;
     flex-direction: column;
     width: 25%;
   }
+
+  .flexManagePage {
+    display: flex;
+    flex-direction: column;
+  }
+
   #btotal {
   position: fixed;
   bottom: 0;
@@ -78,4 +84,8 @@ form {
 
 .leftCaptionSpacing {
   padding-left: 6%;
+}
+
+.rightCaptionSpacing {
+  padding-right: 3.5%;
 }

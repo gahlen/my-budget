@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import { LedgerContext } from "../context/LedgerContext";
 import { BUDGET_API } from "../config/Coms";
 
 class BudgetManage extends Component {
+  static contextType = LedgerContext // define consumer context for use outside of render...
   constructor(props) {
     super(props);
 
@@ -36,7 +38,12 @@ class BudgetManage extends Component {
   };
 
   getBankData = () => {
-    fetch(`${BUDGET_API}/summary`, {
+    const startDate = this.context.startDate  // Use context in this manner to obtain context values
+    const endDate = this.context.endDate  
+
+    console.log("startDate",startDate, endDate)
+
+    fetch(`${BUDGET_API}/summary/${startDate}/${endDate}`, {
       method: "GET"
     })
       .then(res => res.json())
@@ -63,7 +70,6 @@ class BudgetManage extends Component {
       onSelectAll: this.handleOnSelectAll,
     };
 
-
     const columns = [
       { text: "Reference Id", dataField: "refNumber" },
       { text: "Type", dataField: "type" },
@@ -75,14 +81,17 @@ class BudgetManage extends Component {
     ];
 
     return (
-      <div>
+      <form className="flexManagePage">
+          <LedgerContext.Consumer>
+              {({ startDate, endDate }) => <h4>Budget Date-- { startDate } thru { endDate }</h4>}
+          </LedgerContext.Consumer>
         <BootstrapTable
           keyField="refNumber"
           data={this.state.entryData}
           columns={columns}
           selectRow={selectRow}
-        />
-      </div>
+        />   
+      </form>
     );
   }
 }

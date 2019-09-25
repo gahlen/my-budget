@@ -37,6 +37,7 @@ class BudgetTrans extends Component {
             if (a.category > b.category) {
               return 1;
             }
+            return null
           })
         }));
       })
@@ -74,7 +75,8 @@ class BudgetTrans extends Component {
         }
       ]
     }));
-    this.setState({ newRefNum: (this.state.newRefNum += 1) });
+    let tempRefNum = this.state.newRefNum
+    this.setState({ newRefNum: (tempRefNum += 1) });
   };
 
   handleUpdate = async event => {
@@ -169,7 +171,7 @@ class BudgetTrans extends Component {
                 </div>
               ))}
               
-              <output className="unCatAmt">Unsplit Amount - $ {eval(this.state.amtBal).toFixed(2)}</output>
+              <output className="unCatAmt">Unsplit Amount - $ {(this.state.amtBal).toFixed(2)}</output>
           
               <button className="btnSize" onClick={this.handleSplit}>
                 Split

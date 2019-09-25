@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { LedgerContext } from "../context/LedgerContext";
 
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ class Home extends Component {
   componentDidMount() {}
 
   render() {
-    let date = this.context;
+    //let date = this.context;
     return (
       <React.Fragment>
         <form

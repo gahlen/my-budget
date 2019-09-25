@@ -25,20 +25,22 @@ class Category extends Component {
       .then(res => res.json())
       .then(entries => {
         this.setState(() => ({
-          entryData: entries.sort((a, b) => { // binary sort
+          entryData: entries.sort((a, b) => { 
             if (a.category < b.category) {
               return -1;
             }
             if (a.category > b.category) {
               return 1;
             }
+            return null
           })
         }));
       })
       .then(() => {
         this.state.entryData.forEach(element => {
+          let tempBudgetTotal = this.state.budgetTotal
           this.setState({
-            budgetTotal: (this.state.budgetTotal += parseFloat(
+            budgetTotal: (tempBudgetTotal += parseFloat(
               element.budgetAmount
             ))
           });
@@ -99,10 +101,11 @@ class Category extends Component {
     return (
       <>
         <form className="container animate">
-          <div className="flexButton">
+          <div className="flexPage">
           <LedgerContext.Consumer>
-              {({ startDate }) => <h3> Budget Dates: { startDate }</h3>}
-            </LedgerContext.Consumer>
+              {({ startDate, endDate }) => <h4>Budget Dates-- { startDate } thru { endDate }</h4>}
+          </LedgerContext.Consumer>
+
             <label htmlFor="category">
               <b>Category</b>
             </label>
@@ -167,7 +170,7 @@ class Category extends Component {
           <div className="captionSpacing">
             <h3 className=" budgetCaption">Difference</h3>{" "}
             <LedgerContext.Consumer>
-              {({ contextData }) => <h3>{eval(contextData - this.state.budgetTotal).toFixed(2)}</h3>}
+              {({ contextData }) => <h3>{(contextData - this.state.budgetTotal).toFixed(2)}</h3>}
             </LedgerContext.Consumer>
           </div>
         </form>

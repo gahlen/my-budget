@@ -25,7 +25,8 @@ class BudgetSummary extends Component {
             }
             if (a.category > b.category) {
               return 1
-            }           
+            }  
+            return null         
           })
       )
       .then((sorted) => {

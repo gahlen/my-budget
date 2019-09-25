@@ -15,25 +15,23 @@ class App extends Component {
 
     this.dateTransfer = (startDate, endDate) => {
       this.setState({ startDate: startDate, endDate: endDate });
-      console.log("app", startDate, endDate)
     };
 
     this.state = {
       contextData: [],
-      startDate: "",
-      endDate: "",
+      budgetDates: {},
       dataTransfer: this.dataTransfer,
       dateTransfer: this.dateTransfer
     };
   }
   render() {
-    console.log("apprender",this.state)
+    console.log("apprender", this.state);
     return (
       <LedgerContext.Provider value={this.state}>
-        <Router>
-          <Nav />
-          <Routes login={login} />
-        </Router>
+            <Router>
+              <Nav />
+              <Routes login={login} />
+            </Router>
       </LedgerContext.Provider>
     );
   }
