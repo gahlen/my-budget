@@ -1,21 +1,20 @@
 .navbar {
   display: flex;
-    /* justify-content: flex-start; */ 
-    background-color: rgb(143, 228, 221);
-    height: 12%;
+  justify-content: space-between;
+  background-color: rgb(143, 228, 221);
 }
 
 .navbar * {
-    margin: 1vh 1vw;
+  margin: .5vh .5vw;
 }
 .right-align {
-    float: right;
-    height: 30px;
-    padding-top: 5px;
+  float: right;
+  height: 30px;
+  padding-top: 5px;
 }
 
 .left-align {
-    float: left;
-    height: 30px;
-    padding-top: 5px;
-} 
+  float: left;
+  height: 30px;
+  padding-top: 5px;
+}

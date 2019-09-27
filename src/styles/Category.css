@@ -6,6 +6,7 @@ th {
 form {
   display: flex;
   background-color: #fcf2dc;
+  border-style: solid;
 }
   
   button {
